@@ -88,8 +88,12 @@ export default function Sidebar() {
 
   // auto-open helpers
   const inDataLoad    = ['/import-report', '/realtime-extraction'].includes(pathname)
-  const inAssessReports = ['/data-volume', '/user-table', '/table-fields'].some(p => pathname.startsWith(p))
-  const inAssessment  = pathname.startsWith('/assessment') || inAssessReports
+  const inAssessReports = [
+    '/data-volume', '/user-table', '/table-fields', '/datatype',
+    '/views', '/stored-procedures', '/sp-chart', '/functions', '/indexes',
+    '/triggers', '/entity-relationship', '/io-transaction',
+  ].some(p => pathname.startsWith(p))
+  const inAssessment  = pathname.startsWith('/assessment') || inAssessReports || pathname.startsWith('/estimation-summary') || pathname.startsWith('/detailed-estimations')
 
   return (
     <div className="cap-sidebar">
@@ -151,10 +155,10 @@ export default function Sidebar() {
           <div className="sb-section">Administration</div>
 
           <Collapse icon="manage_accounts" label="Client Setup" badge="ADMIN" defaultOpen={false}>
-            <ComingSoon icon="person_add" label="Setup New Client" />
-            <ComingSoon icon="folder_open" label="Setup Project" />
-            <ComingSoon icon="list_alt" label="Client Details" />
-            <ComingSoon icon="settings_accessibility" label="User Access" />
+            <SubLink to="/setup-new-client" icon="person_add"            label="Setup New Client" />
+            <SubLink to="/setup-project"    icon="folder_open"           label="Setup Project"    />
+            <SubLink to="/client-details"   icon="list_alt"              label="Client Details"   />
+            <SubLink to="/user-access"      icon="settings_accessibility" label="User Access"     />
           </Collapse>
 
           <div className="sb-disabled-link" style={{ paddingLeft: 12 }}>
@@ -188,23 +192,24 @@ export default function Sidebar() {
               depth={1}
               defaultOpen={inAssessReports}
             >
-              <SubLink to="/data-volume"  icon="storage"     label="Data Volume"         depth={2} />
-              <SubLink to="/user-table"   icon="table_chart" label="User Tables"         depth={2} />
-              <SubLink to="/table-fields" icon="view_list"   label="Table Field Listing" depth={2} />
-              <ComingSoon icon="category"   label="Datatype"            depth={2} />
-              <ComingSoon icon="visibility" label="Views"               depth={2} />
-              <ComingSoon icon="code"       label="Stored Procedures"   depth={2} />
-              <ComingSoon icon="functions"  label="Functions"           depth={2} />
-              <ComingSoon icon="device_hub" label="Indexes"             depth={2} />
-              <ComingSoon icon="flash_on"   label="Triggers"            depth={2} />
-              <ComingSoon icon="share"      label="Entity Relationship" depth={2} />
-              <ComingSoon icon="swap_horiz" label="IO Transaction"      depth={2} />
+              <SubLink to="/data-volume"         icon="storage"     label="Data Volume"         depth={2} />
+              <SubLink to="/user-table"          icon="table_chart" label="User Tables"         depth={2} />
+              <SubLink to="/table-fields"        icon="view_list"   label="Table Field Listing" depth={2} />
+              <SubLink to="/datatype"            icon="category"    label="Datatype"            depth={2} />
+              <SubLink to="/views"               icon="visibility"  label="Views"               depth={2} />
+              <SubLink to="/stored-procedures"   icon="code"        label="Stored Procedures"   depth={2} />
+              <SubLink to="/sp-chart"            icon="bubble_chart" label="SP Dependency Chart" depth={2} />
+              <SubLink to="/functions"           icon="functions"   label="Functions"           depth={2} />
+              <SubLink to="/indexes"             icon="device_hub"  label="Indexes"             depth={2} />
+              <SubLink to="/triggers"            icon="flash_on"    label="Triggers"            depth={2} />
+              <SubLink to="/entity-relationship" icon="share"       label="Entity Relationship" depth={2} />
+              <SubLink to="/io-transaction"      icon="swap_horiz"  label="IO Transaction"      depth={2} />
             </Collapse>
 
             {/* Nested: Estimation Summary */}
-            <Collapse icon="summarize" label="Estimation Summary" depth={1} defaultOpen={false}>
-              <ComingSoon icon="assignment" label="Summary"              depth={2} />
-              <ComingSoon icon="view_list"  label="Detailed Estimations" depth={2} />
+            <Collapse icon="summarize" label="Estimation Summary" depth={1} defaultOpen={pathname.startsWith('/estimation-summary') || pathname.startsWith('/detailed-estimations')}>
+              <SubLink to="/estimation-summary"   icon="assignment" label="Summary"              depth={2} />
+              <SubLink to="/detailed-estimations" icon="view_list"  label="Detailed Estimations" depth={2} />
             </Collapse>
           </Collapse>
         </>
@@ -213,9 +218,9 @@ export default function Sidebar() {
       {/* ── Analysis ─────────────────────────────────────────── */}
       <div className="sb-section">Analysis</div>
 
-      <Collapse icon="bar_chart" label="Analysis" defaultOpen={false}>
-        <ComingSoon icon="dns"        label="Technical Debt (Unused Objects)" />
-        <ComingSoon icon="recommend"  label="Recommendations" />
+      <Collapse icon="bar_chart" label="Analysis" defaultOpen={pathname.startsWith('/technical-overheads')}>
+        <SubLink to="/technical-overheads" icon="dns"       label="Technical Overheads" />
+        <ComingSoon icon="recommend"                        label="Recommendations"     />
       </Collapse>
 
       {/* ── CRUD Report ──────────────────────────────────────── */}

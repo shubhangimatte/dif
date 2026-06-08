@@ -19,15 +19,15 @@ interface CardDef {
 }
 
 const CARDS: CardDef[] = [
-  { key: 'vlowcount',    icon: 'trending_down', label: 'Very Low Complexity', accent: '#0891B2', iconBg: '#CFFAFE', iconColor: '#0891B2', border: '#A5F3FC' },
-  { key: 'lowcount',     icon: 'trending_down', label: 'Low Complexity',      accent: '#0F766E', iconBg: '#CCFBF1', iconColor: '#0F766E', border: '#99F6E4' },
-  { key: 'mediumcount',  icon: 'trending_flat', label: 'Medium Complexity',   accent: '#B45309', iconBg: '#FEF3C7', iconColor: '#B45309', border: '#FCD34D' },
-  { key: 'highcount',    icon: 'trending_up',   label: 'High Complexity',     accent: '#BE185D', iconBg: '#FCE7F3', iconColor: '#BE185D', border: '#F9A8D4' },
-  { key: 'complexcount', icon: 'warning',       label: 'Complex',             accent: '#7C3AED', iconBg: '#EDE9FE', iconColor: '#7C3AED', border: '#C4B5FD' },
+  { key: 'vlowcount',    icon: 'trending_down', label: 'Very Low Complexity', accent: '#0070AD', iconBg: '#E6F1FB', iconColor: '#0070AD', border: '#DDE8F4' },
+  { key: 'lowcount',     icon: 'trending_down', label: 'Low Complexity',      accent: '#0070AD', iconBg: '#E6F1FB', iconColor: '#0070AD', border: '#DDE8F4' },
+  { key: 'mediumcount',  icon: 'trending_flat', label: 'Medium Complexity',   accent: '#0070AD', iconBg: '#E6F1FB', iconColor: '#0070AD', border: '#DDE8F4' },
+  { key: 'highcount',    icon: 'trending_up',   label: 'High Complexity',     accent: '#0070AD', iconBg: '#E6F1FB', iconColor: '#0070AD', border: '#DDE8F4' },
+  { key: 'complexcount', icon: 'warning',       label: 'Complex',             accent: '#0070AD', iconBg: '#E6F1FB', iconColor: '#0070AD', border: '#DDE8F4' },
 ]
 
 const complexityColors: Record<string, string> = {
-  Low: '#28A745', 'Very Low': '#00AEEF', Medium: '#ffa726', High: '#E40521', Complex: '#900012'
+  'Very Low': '#0891B2', Low: '#0F766E', Medium: '#B45309', High: '#BE185D', Complex: '#7C3AED'
 }
 
 const COLS: Column[] = [
@@ -87,7 +87,7 @@ export default function UserTable() {
       <div className="cap-card">
         <div className="cap-card-header"><h4>User Table Inventory</h4></div>
         <div className="cap-card-body">
-          <DataTable columns={COLS} data={rows as Record<string, unknown>[]} />
+          <DataTable columns={COLS} data={rows as Record<string, unknown>[]} title="User-Table-Inventory" />
         </div>
       </div>
     </Layout>

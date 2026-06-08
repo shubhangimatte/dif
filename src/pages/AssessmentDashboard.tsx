@@ -23,14 +23,14 @@ interface CardDef {
 }
 
 const CARDS: CardDef[] = [
-  { key: 'tablesCount',    icon: 'table_chart', label: 'Tables',       accent: '#0F766E', iconBg: '#CCFBF1', iconColor: '#0F766E', border: '#99F6E4' },
-  { key: 'fieldCount',     icon: 'view_column', label: 'Fields',       accent: '#047857', iconBg: '#D1FAE5', iconColor: '#047857', border: '#6EE7B7' },
-  { key: 'datatypeCount',  icon: 'category',    label: 'Data Types',   accent: '#B45309', iconBg: '#FEF3C7', iconColor: '#B45309', border: '#FCD34D' },
-  { key: 'storedproCount', icon: 'code',        label: 'Stored Procs', accent: '#7C3AED', iconBg: '#EDE9FE', iconColor: '#7C3AED', border: '#C4B5FD' },
-  { key: 'funCount',       icon: 'functions',   label: 'Functions',    accent: '#BE185D', iconBg: '#FCE7F3', iconColor: '#BE185D', border: '#F9A8D4' },
-  { key: 'viewCount',      icon: 'visibility',  label: 'Views',        accent: '#3730A3', iconBg: '#EDE9FE', iconColor: '#3730A3', border: '#C4B5FD' },
-  { key: 'rowSum',         icon: 'format_list_numbered', label: 'DB Records', accent: '#0891B2', iconBg: '#CFFAFE', iconColor: '#0891B2', border: '#67E8F9' },
-  { key: 'dbSum',          icon: 'storage',     label: 'DB Size',      accent: '#475569', iconBg: '#F1F5F9', iconColor: '#475569', border: '#CBD5E1' },
+  { key: 'tablesCount',    icon: 'table_chart', label: 'Tables',       accent: '#0070AD', iconBg: '#E6F1FB', iconColor: '#0070AD', border: '#DDE8F4' },
+  { key: 'fieldCount',     icon: 'view_column', label: 'Fields',       accent: '#0070AD', iconBg: '#E6F1FB', iconColor: '#0070AD', border: '#DDE8F4' },
+  { key: 'datatypeCount',  icon: 'category',    label: 'Data Types',   accent: '#0070AD', iconBg: '#E6F1FB', iconColor: '#0070AD', border: '#DDE8F4' },
+  { key: 'storedproCount', icon: 'code',        label: 'Stored Procs', accent: '#0070AD', iconBg: '#E6F1FB', iconColor: '#0070AD', border: '#DDE8F4' },
+  { key: 'funCount',       icon: 'functions',   label: 'Functions',    accent: '#0070AD', iconBg: '#E6F1FB', iconColor: '#0070AD', border: '#DDE8F4' },
+  { key: 'viewCount',      icon: 'visibility',  label: 'Views',        accent: '#0070AD', iconBg: '#E6F1FB', iconColor: '#0070AD', border: '#DDE8F4' },
+  { key: 'rowSum',         icon: 'format_list_numbered', label: 'DB Records', accent: '#0070AD', iconBg: '#E6F1FB', iconColor: '#0070AD', border: '#DDE8F4' },
+  { key: 'dbSum',          icon: 'storage',     label: 'DB Size',      accent: '#0070AD', iconBg: '#E6F1FB', iconColor: '#0070AD', border: '#DDE8F4' },
 ]
 
 const BADGE: Record<string, string> = {

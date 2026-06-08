@@ -61,7 +61,7 @@ body {
 /* Sidebar */
 .cap-sidebar {
   width: 210px;
-  background: linear-gradient(180deg, #0D1F47 0%, #12234F 55%, #0A1A3D 100%);
+  background: linear-gradient(180deg, #1F2937 0%, #1A2332 55%, #111827 100%);
   flex-shrink: 0;
   overflow-y: auto;
   box-shadow: 4px 0 18px rgba(0,0,0,.28);

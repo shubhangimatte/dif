@@ -2,40 +2,27 @@ import { useState, useEffect, type SyntheticEvent } from 'react'
 import { useNavigate } from 'react-router-dom'
 import { useAuth } from '../context/AuthContext'
 import type { Role } from '../context/AuthContext'
+import { clientService } from '../services/clientService'
+import type { ClientProject } from '../services/clientService'
 
-const MOCK_PROJECTS = [
-  { id: 1, project_name: 'Project Alpha'  },
-  { id: 2, project_name: 'Project Beta'   },
-  { id: 3, project_name: 'Project Gamma'  },
-]
-
-type DashType = 'assess' | 'migration' | 'que' | ''
+type DashType = 'overview' | 'detailed'
 
 export default function Login() {
   const { login } = useAuth()
   const navigate  = useNavigate()
 
-  const [role,      setRole]      = useState<Role>('user')
-  const [username,  setUsername]  = useState('')
-  const [password,  setPassword]  = useState('')
-  const [showPwd,   setShowPwd]   = useState(false)
-  const [project,   setProject]   = useState('')
-  const [dashType,  setDashType]  = useState<DashType>('')
-  const [showExtra, setShowExtra] = useState(false)
-  const [error,     setError]     = useState('')
-  const [success,   setSuccess]   = useState('')
-  const [loading,   setLoading]   = useState(false)
+  const [role,     setRole]     = useState<Role>('user')
+  const [username, setUsername] = useState('')
+  const [password, setPassword] = useState('')
+  const [showPwd,  setShowPwd]  = useState(false)
+  const [error,    setError]    = useState('')
+  const [success,  setSuccess]  = useState('')
+  const [loading,  setLoading]  = useState(false)
+  const [project,  setProject]  = useState('')
+  const [dashType, setDashType] = useState<DashType>('overview')
+  const [projects, setProjects] = useState<ClientProject[]>([])
 
-  /* Mirror PHP's on-input AJAX — show project/dashType once both fields have values */
-  useEffect(() => {
-    if (username.trim() && password.trim()) {
-      setShowExtra(true)
-    } else {
-      setShowExtra(false)
-      setProject('')
-      setDashType('')
-    }
-  }, [username, password])
+  useEffect(() => { clientService.getAllProjects().then(setProjects) }, [])
 
   const handleSubmit = async (e: SyntheticEvent<HTMLFormElement>) => {
     e.preventDefault()
@@ -207,7 +194,7 @@ export default function Login() {
                 </div>
 
                 {/* Password */}
-                <div style={{ marginBottom: showExtra ? 20 : 24 }}>
+                <div style={{ marginBottom: 24 }}>
                   <label style={{ fontSize: 12.5, fontWeight: 600, color: '#12234F', display: 'flex', alignItems: 'center', gap: 5, marginBottom: 7 }}>
                     <i className="material-icons" style={{ fontSize: 15, color: '#0070AD' }}>lock</i>
                     Password
@@ -231,14 +218,9 @@ export default function Login() {
                   </div>
                 </div>
 
-                {/* ── Dynamic fields (PHP: shown after AJAX credentials check) ── */}
-                {showExtra && (
-                  <div style={{
-                    background: '#F7FAFD', border: '1px solid #DDE8F4', borderRadius: 10,
-                    padding: '18px 18px 14px', marginBottom: 20,
-                    animation: 'fadeSlide .25s ease',
-                  }}>
-                    {/* Project dropdown */}
+                {/* Project + Dashboard Type — user only */}
+                {role === 'user' && (
+                  <>
                     <div style={{ marginBottom: 16 }}>
                       <label style={{ fontSize: 12.5, fontWeight: 600, color: '#12234F', display: 'flex', alignItems: 'center', gap: 5, marginBottom: 7 }}>
                         <i className="material-icons" style={{ fontSize: 15, color: '#0070AD' }}>folder_open</i>
@@ -246,54 +228,39 @@ export default function Login() {
                       </label>
                       <select
                         className="form-control"
-                        name="projectlist"
                         value={project}
                         onChange={e => setProject(e.target.value)}
                       >
-                        <option value="" disabled>Select project</option>
-                        {MOCK_PROJECTS.map(p => (
-                          <option key={p.id} value={String(p.id)}>{p.project_name}</option>
+                        <option value="">— Select Project —</option>
+                        {Array.from(new Set(projects.map(p => p.client_name))).map(client => (
+                          <optgroup key={client} label={client}>
+                            {projects.filter(p => p.client_name === client).map(p => (
+                              <option key={p.project_name} value={p.project_name}>{p.project_name}</option>
+                            ))}
+                          </optgroup>
                         ))}
                       </select>
                     </div>
 
-                    {/* Dashboard Type radios */}
-                    <div>
-                      <label style={{ fontSize: 12.5, fontWeight: 600, color: '#12234F', display: 'block', marginBottom: 10 }}>
+                    <div style={{ marginBottom: 24 }}>
+                      <label style={{ fontSize: 12.5, fontWeight: 600, color: '#12234F', display: 'flex', alignItems: 'center', gap: 5, marginBottom: 9 }}>
+                        <i className="material-icons" style={{ fontSize: 15, color: '#0070AD' }}>dashboard</i>
                         Dashboard Type
                       </label>
-                      <div style={{ display: 'flex', gap: 8, flexWrap: 'wrap' }}>
-                        {([
-                          { value: 'assess',    label: 'Assessment',    icon: 'analytics'    },
-                          { value: 'migration', label: 'Validation',    icon: 'fact_check'   },
-                          { value: 'que',       label: 'Questionnaire', icon: 'quiz'         },
-                        ] as { value: DashType; label: string; icon: string }[]).map(opt => (
-                          <label key={opt.value}
-                            style={{
-                              flex: 1, minWidth: 110, display: 'flex', alignItems: 'center', gap: 7,
-                              padding: '9px 12px', borderRadius: 8, cursor: 'pointer',
-                              border: dashType === opt.value ? '2px solid #0070AD' : '2px solid #C8D8EC',
-                              background: dashType === opt.value ? 'rgba(0,112,173,.07)' : '#fff',
-                              transition: 'all .15s',
-                            }}>
-                            <input
-                              type="radio"
-                              name="dashboardtype"
-                              value={opt.value}
-                              checked={dashType === opt.value}
-                              onChange={() => setDashType(opt.value)}
-                              style={{ accentColor: '#0070AD', width: 14, height: 14, flexShrink: 0 }}
-                            />
-                            <i className="material-icons" style={{ fontSize: 15, color: dashType === opt.value ? '#0070AD' : '#8A95A3' }}>{opt.icon}</i>
-                            <span style={{ fontSize: 12, fontWeight: 600, color: dashType === opt.value ? '#0070AD' : '#6B7A8D' }}>{opt.label}</span>
+                      <div style={{ display: 'flex', gap: 10 }}>
+                        {([['overview', 'Overview', 'bar_chart'], ['detailed', 'Detailed', 'analytics']] as [DashType, string, string][]).map(([val, lbl, icon]) => (
+                          <label key={val} style={{ flex: 1, display: 'flex', alignItems: 'center', gap: 8, padding: '8px 12px', borderRadius: 8, cursor: 'pointer', border: dashType === val ? '2px solid #0070AD' : '2px solid #DDE8F4', background: dashType === val ? '#E6F1FB' : '#F7FAFD', transition: 'all .15s' }}>
+                            <input type="radio" name="dashType" value={val} checked={dashType === val} onChange={() => setDashType(val)} style={{ accentColor: '#0070AD', width: 14, height: 14 }} />
+                            <i className="material-icons" style={{ fontSize: 15, color: dashType === val ? '#0070AD' : '#94A3B8' }}>{icon}</i>
+                            <span style={{ fontSize: 12.5, fontWeight: 600, color: dashType === val ? '#12234F' : '#64748B' }}>{lbl}</span>
                           </label>
                         ))}
                       </div>
                     </div>
-                  </div>
+                  </>
                 )}
 
-                {/* Login button — right-aligned like PHP's pull-right */}
+                {/* Login button */}
                 <div style={{ display: 'flex', justifyContent: 'flex-end', alignItems: 'center', gap: 14 }}>
                   <button type="button" onClick={() => fillDemo(role)}
                     style={{ fontSize: 12, color: '#0070AD', background: 'none', border: 'none', cursor: 'pointer', textDecoration: 'underline', fontFamily: 'inherit', padding: 0 }}>

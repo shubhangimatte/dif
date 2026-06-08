@@ -85,7 +85,7 @@ export default function TableFieldListing() {
                     <div>Loading fields...</div>
                   </div>
                 : <div style={{ background: '#fff', border: '1px solid #DDE8F4', borderRadius: 8, padding: 14 }}>
-                    <DataTable columns={COLS} data={(fields[t.Table_Name] ?? []) as Record<string, unknown>[]} pageSize={10} />
+                    <DataTable columns={COLS} data={(fields[t.Table_Name] ?? []) as Record<string, unknown>[]} pageSize={10} title={`${t.Table_Name}-Fields`} />
                   </div>
               }
             </div>

@@ -25,34 +25,82 @@ interface CardDef {
 interface ComplexityDef {
   label: string
   key: keyof DatabaseComplexity
-  color: string
 }
 
 const CARDS: CardDef[] = [
-  { key: 'dbCount',        icon: 'dns',         label: 'Databases',    accent: '#3730A3', iconBg: '#EDE9FE', iconColor: '#3730A3', border: '#C4B5FD' },
-  { key: 'tablesCount',    icon: 'table_chart', label: 'Tables',       accent: '#0F766E', iconBg: '#CCFBF1', iconColor: '#0F766E', border: '#99F6E4' },
-  { key: 'fieldCount',     icon: 'view_column', label: 'Fields',       accent: '#047857', iconBg: '#D1FAE5', iconColor: '#047857', border: '#6EE7B7' },
-  { key: 'datatypeCount',  icon: 'category',    label: 'Data Types',   accent: '#B45309', iconBg: '#FEF3C7', iconColor: '#B45309', border: '#FCD34D' },
-  { key: 'storedproCount', icon: 'code',        label: 'Stored Procs', accent: '#7C3AED', iconBg: '#EDE9FE', iconColor: '#7C3AED', border: '#C4B5FD' },
-  { key: 'funCount',       icon: 'functions',   label: 'Functions',    accent: '#BE185D', iconBg: '#FCE7F3', iconColor: '#BE185D', border: '#F9A8D4' },
-  { key: 'rowSum',         icon: 'format_list_numbered', label: 'DB Records', accent: '#0891B2', iconBg: '#CFFAFE', iconColor: '#0891B2', border: '#67E8F9' },
-  { key: 'dbSum',          icon: 'storage',     label: 'DB Size',      accent: '#475569', iconBg: '#F1F5F9', iconColor: '#475569', border: '#CBD5E1' },
+  { key: 'dbCount',        icon: 'dns',         label: 'Databases',    accent: '#0070AD', iconBg: '#E6F1FB', iconColor: '#0070AD', border: '#DDE8F4' },
+  { key: 'tablesCount',    icon: 'table_chart', label: 'Tables',       accent: '#0070AD', iconBg: '#E6F1FB', iconColor: '#0070AD', border: '#DDE8F4' },
+  { key: 'fieldCount',     icon: 'view_column', label: 'Fields',       accent: '#0070AD', iconBg: '#E6F1FB', iconColor: '#0070AD', border: '#DDE8F4' },
+  { key: 'datatypeCount',  icon: 'category',    label: 'Data Types',   accent: '#0070AD', iconBg: '#E6F1FB', iconColor: '#0070AD', border: '#DDE8F4' },
+  { key: 'storedproCount', icon: 'code',        label: 'Stored Procs', accent: '#0070AD', iconBg: '#E6F1FB', iconColor: '#0070AD', border: '#DDE8F4' },
+  { key: 'funCount',       icon: 'functions',   label: 'Functions',    accent: '#0070AD', iconBg: '#E6F1FB', iconColor: '#0070AD', border: '#DDE8F4' },
+  { key: 'rowSum',         icon: 'format_list_numbered', label: 'DB Records', accent: '#0070AD', iconBg: '#E6F1FB', iconColor: '#0070AD', border: '#DDE8F4' },
+  { key: 'dbSum',          icon: 'storage',     label: 'DB Size',      accent: '#0070AD', iconBg: '#E6F1FB', iconColor: '#0070AD', border: '#DDE8F4' },
 ]
 
 const DB_GRADIENTS = [
-  'linear-gradient(135deg,#3730A3,#4F46E5)',
-  'linear-gradient(135deg,#0F766E,#0D9488)',
-  'linear-gradient(135deg,#047857,#059669)',
-  'linear-gradient(135deg,#7C3AED,#8B5CF6)',
+  'linear-gradient(135deg, #12234F, #0070AD)',
+  'linear-gradient(135deg, #0D1F47, #005C91)',
 ]
 
 const COMPLEXITY: ComplexityDef[] = [
-  { label: 'Very Low',  key: 'vlowcount',    color: '#0891B2' },
-  { label: 'Low',       key: 'lowcount',     color: '#0F766E' },
-  { label: 'Medium',    key: 'mediumcount',  color: '#B45309' },
-  { label: 'High',      key: 'highcount',    color: '#BE185D' },
-  { label: 'Complex',   key: 'complexcount', color: '#7C3AED' },
+  { label: 'Very Low', key: 'vlowcount'    },
+  { label: 'Low',      key: 'lowcount'     },
+  { label: 'Medium',   key: 'mediumcount'  },
+  { label: 'High',     key: 'highcount'    },
+  { label: 'Complex',  key: 'complexcount' },
 ]
+
+function ComplexityBarChart({ data }: { data: { label: string; value: number }[] }) {
+  const maxVal = Math.max(1, ...data.map(d => d.value))
+  const svgH = 160, svgW = 350
+  const padL = 24, padR = 6, padT = 20, padB = 26
+  const chartW = svgW - padL - padR
+  const chartH = svgH - padT - padB
+  const bandW  = chartW / data.length
+  const barW   = bandW * 0.55
+  const ticks  = Array.from({ length: 5 }, (_, i) => Math.round((maxVal / 4) * i))
+
+  return (
+    <svg width="100%" viewBox={`0 0 ${svgW} ${svgH}`} style={{ display: 'block', overflow: 'visible' }}>
+      <defs>
+        <linearGradient id="capBarGrad" x1="0" y1="0" x2="0" y2="1">
+          <stop offset="0%"   stopColor="#0070AD" stopOpacity="1"   />
+          <stop offset="100%" stopColor="#12234F" stopOpacity="0.88" />
+        </linearGradient>
+      </defs>
+
+      {/* Horizontal grid lines + Y labels */}
+      {ticks.map(t => {
+        const y = padT + chartH - (t / maxVal) * chartH
+        return (
+          <g key={t}>
+            <line x1={padL} y1={y} x2={svgW - padR} y2={y}
+              stroke={t === 0 ? '#CBD5E1' : '#EEF3F9'}
+              strokeWidth={t === 0 ? 1.5 : 1}
+              strokeDasharray={t === 0 ? undefined : '4 3'}
+            />
+            <text x={padL - 4} y={y + 3.5} textAnchor="end" fontSize={8} fill="#94A3B8" fontFamily="inherit">{t}</text>
+          </g>
+        )
+      })}
+
+      {/* Bars */}
+      {data.map((d, i) => {
+        const barH = Math.max(4, (d.value / maxVal) * chartH)
+        const x    = padL + i * bandW + (bandW - barW) / 2
+        const y    = padT + chartH - barH
+        return (
+          <g key={d.label}>
+            <rect x={x} y={y} width={barW} height={barH} fill="url(#capBarGrad)" rx={4} />
+            <text x={x + barW / 2} y={y - 4} textAnchor="middle" fontSize={8} fontWeight="700" fill="#12234F" fontFamily="inherit">{d.value}</text>
+            <text x={x + barW / 2} y={svgH - 3} textAnchor="middle" fontSize={8} fill="#64748B" fontWeight="600" fontFamily="inherit">{d.label}</text>
+          </g>
+        )
+      })}
+    </svg>
+  )
+}
 
 interface LocalStatCardProps {
   data: Partial<DatabaseSummary>
@@ -104,7 +152,6 @@ export default function Dashboard() {
   }, [])
 
   const toggle = (id: number) => setExpanded(p => ({ ...p, [id]: !p[id] }))
-  const maxBar = Math.max(1, ...COMPLEXITY.map(c => complexity[c.key] ?? 0))
 
   return (
     <Layout title="Assessment Dashboard">
@@ -117,21 +164,12 @@ export default function Dashboard() {
         {CARDS.slice(4).map(c => <StatCard key={c.key} data={summary} card={c} />)}
       </div>
 
-      <div style={{ background: '#fff', borderRadius: 12, border: '0.5px solid #E2E8F0', boxShadow: '0 2px 10px rgba(0,0,0,.06)', padding: '16px 18px 14px', marginBottom: 16 }}>
-        <div style={{ fontSize: 10, fontWeight: 700, color: '#94A3B8', textTransform: 'uppercase', letterSpacing: '.8px', marginBottom: 12 }}>Database Complexity Overview</div>
-        <div style={{ display: 'flex', alignItems: 'flex-end', gap: 10, height: 80 }}>
-          {COMPLEXITY.map(c => {
-            const val = complexity[c.key] ?? 0
-            const h = Math.round((val / maxBar) * 70)
-            return (
-              <div key={c.key} style={{ flex: 1, display: 'flex', flexDirection: 'column', alignItems: 'center', gap: 3 }}>
-                <div style={{ fontSize: 9, fontWeight: 700, color: '#334155' }}>{val}</div>
-                <div style={{ width: '100%', height: h, background: c.color, borderRadius: '3px 3px 0 0', opacity: .85 }} />
-                <div style={{ fontSize: 8.5, color: '#64748B', textTransform: 'uppercase', fontWeight: 600 }}>{c.label}</div>
-              </div>
-            )
-          })}
+      <div style={{ background: '#fff', borderRadius: 12, border: '1.5px solid #DDE8F4', boxShadow: '0 2px 10px rgba(0,0,0,.06)', padding: '16px 18px 8px', marginBottom: 16 }}>
+        <div style={{ display: 'flex', alignItems: 'center', gap: 8, marginBottom: 4 }}>
+          <i className="material-icons" style={{ fontSize: 16, color: '#0070AD' }}>bar_chart</i>
+          <span style={{ fontSize: 11, fontWeight: 700, color: '#12234F', textTransform: 'uppercase', letterSpacing: '.8px' }}>Database Complexity Overview</span>
         </div>
+        <ComplexityBarChart data={COMPLEXITY.map(c => ({ label: c.label, value: complexity[c.key] ?? 0 }))} />
       </div>
 
       <div style={{ fontSize: 10, fontWeight: 700, color: '#94A3B8', textTransform: 'uppercase', letterSpacing: '.8px', marginBottom: 10 }}>Database Listings</div>

@@ -23,19 +23,19 @@ interface CardDef {
 }
 
 const CARDS: CardDef[] = [
-  { key: 'top10',         icon: 'table_chart',          label: 'Top 10 Tables Volume',   accent: '#43a047', iconBg: '#F1FBF1', iconColor: '#43a047', border: '#C8E6C9', fmt: fmtMB },
-  { key: 'top25',         icon: 'bar_chart',            label: 'Top 25 Tables Volume',   accent: '#00acc1', iconBg: '#E0F7FA', iconColor: '#00acc1', border: '#B2EBF2', fmt: fmtMB },
-  { key: '50percentdata', icon: 'pie_chart',            label: '50% Data Volume Tables', accent: '#0288d1', iconBg: '#E1F5FE', iconColor: '#0288d1', border: '#B3E5FC', fmt: n => n },
-  { key: '1to10MB',       icon: 'filter_1',             label: '1 MB – 10 MB Tables',    accent: '#9e9e9e', iconBg: '#F5F5F5', iconColor: '#757575', border: '#E0E0E0', fmt: n => n },
-  { key: '10to100MB',     icon: 'filter_2',             label: '10 MB – 100 MB Tables',  accent: '#fb8c00', iconBg: '#FFF3E0', iconColor: '#fb8c00', border: '#FFE0B2', fmt: n => n },
+  { key: 'top10',         icon: 'table_chart',          label: 'Top 10 Tables Volume',   accent: '#0070AD', iconBg: '#E6F1FB', iconColor: '#0070AD', border: '#DDE8F4', fmt: fmtMB },
+  { key: 'top25',         icon: 'bar_chart',            label: 'Top 25 Tables Volume',   accent: '#0070AD', iconBg: '#E6F1FB', iconColor: '#0070AD', border: '#DDE8F4', fmt: fmtMB },
+  { key: '50percentdata', icon: 'pie_chart',            label: '50% Data Volume Tables', accent: '#0070AD', iconBg: '#E6F1FB', iconColor: '#0070AD', border: '#DDE8F4', fmt: n => n },
+  { key: '1to10MB',       icon: 'filter_1',             label: '1 MB – 10 MB Tables',    accent: '#0070AD', iconBg: '#E6F1FB', iconColor: '#0070AD', border: '#DDE8F4', fmt: n => n },
+  { key: '10to100MB',     icon: 'filter_2',             label: '10 MB – 100 MB Tables',  accent: '#0070AD', iconBg: '#E6F1FB', iconColor: '#0070AD', border: '#DDE8F4', fmt: n => n },
 ]
 
 const CARDS2: CardDef[] = [
-  { key: '100to1GB',        icon: 'filter_3',   label: '100 MB – 1 GB Tables',  accent: '#e53935', iconBg: '#FFEBEE', iconColor: '#e53935', border: '#FFCDD2', fmt: n => n },
-  { key: '1GBto10GB',       icon: 'filter_4',   label: '1 GB – 10 GB Tables',   accent: '#43a047', iconBg: '#F1FBF1', iconColor: '#43a047', border: '#C8E6C9', fmt: n => n },
-  { key: '10GBto50GB',      icon: 'filter_5',   label: '10 GB – 50 GB Tables',  accent: '#fb8c00', iconBg: '#FFF3E0', iconColor: '#fb8c00', border: '#FFE0B2', fmt: n => n },
-  { key: '50GBto100GB',     icon: 'filter_6',   label: '50 GB – 100 GB Tables', accent: '#9e9e9e', iconBg: '#F5F5F5', iconColor: '#757575', border: '#E0E0E0', fmt: n => n },
-  { key: 'greaterThan100GB',icon: 'filter_none',label: '> 100 GB Tables',       accent: '#7c3aed', iconBg: '#EDE9FE', iconColor: '#7c3aed', border: '#C4B5FD', fmt: n => n },
+  { key: '100to1GB',        icon: 'filter_3',   label: '100 MB – 1 GB Tables',  accent: '#0070AD', iconBg: '#E6F1FB', iconColor: '#0070AD', border: '#DDE8F4', fmt: n => n },
+  { key: '1GBto10GB',       icon: 'filter_4',   label: '1 GB – 10 GB Tables',   accent: '#0070AD', iconBg: '#E6F1FB', iconColor: '#0070AD', border: '#DDE8F4', fmt: n => n },
+  { key: '10GBto50GB',      icon: 'filter_5',   label: '10 GB – 50 GB Tables',  accent: '#0070AD', iconBg: '#E6F1FB', iconColor: '#0070AD', border: '#DDE8F4', fmt: n => n },
+  { key: '50GBto100GB',     icon: 'filter_6',   label: '50 GB – 100 GB Tables', accent: '#0070AD', iconBg: '#E6F1FB', iconColor: '#0070AD', border: '#DDE8F4', fmt: n => n },
+  { key: 'greaterThan100GB',icon: 'filter_none',label: '> 100 GB Tables',       accent: '#0070AD', iconBg: '#E6F1FB', iconColor: '#0070AD', border: '#DDE8F4', fmt: n => n },
 ]
 
 interface CardRowProps {
@@ -96,7 +96,7 @@ export default function DataVolume() {
       <div className="cap-card">
         <div className="cap-card-header"><h4>Data Volume</h4></div>
         <div className="cap-card-body">
-          <DataTable columns={COLS} data={rows as Record<string, unknown>[]} />
+          <DataTable columns={COLS} data={rows as Record<string, unknown>[]} title="Data-Volume" />
         </div>
       </div>
     </Layout>
